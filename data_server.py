@@ -11,6 +11,7 @@ def format(listings):
     for listing in listings:
         formated_listing += (f"id=<{listing["id"]}>;city=<{listing["city"]}>;address=<{listing["address"]}>;price=<{listing["price"]}>;bedrooms=<{listing["bedrooms"]}>")
     
+    formated_listing += "\n"
     return formated_listing
 
 # Raw search city and price
@@ -37,11 +38,24 @@ def handle_app(conn, addr):
             details = text.split()
             #check message if its valid
             if details[0] == "RAW_LIST":
-                print(format(listings))
+                conn.sendall(format(listings).encode("utf-8"))
+
             elif details[0] == "RAW_SEARCH":
-                pass
+                info = details[1:]
+                search_params = {}
+
+                try:
+                    for i in info:
+                        key, val = i.split("=")
+                        search_params[key] = val
+                    
+                    search_params["max_price"] = int(search_params["max_price"])
+                    conn.sendall(format(r_search(listings, search_params["city"], search_params["max_price"])).encode("utf-8"))
+
+                except Exception as e:
+                    conn.sendall(f"Error: {e}\n".encode("utf-8"))
             else:
-                print("Error: Invalid Command")
+                conn.sendall("Error: Invalid Command")
     print("Disconnected", addr)
 
 
