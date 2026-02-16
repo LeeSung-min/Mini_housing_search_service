@@ -8,10 +8,11 @@ with open("listings.json", "r") as file:
 # format listings
 def format(listings):
     formated_listing = ""
+    count = 0
     for listing in listings:
         formated_listing += (f"id=<{listing['id']}>;city=<{listing['city']}>;address=<{listing['address']}>;price=<{listing['price']}>;bedrooms=<{listing['bedrooms']}>")
-    
-    formated_listing += "\n"
+        count += 1
+    formated_listing = f"OK RESULT {count}\n" + formated_listing + "\n"
     return formated_listing
 
 # Raw search city and price
