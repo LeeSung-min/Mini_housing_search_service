@@ -58,9 +58,14 @@ def handle_app(conn, addr):
                 conn.sendall("Error: Invalid Command")
     print("Disconnected", addr)
 
+def main():
+    # create a socket
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as data_server:
 
-print("RAW_List")
-print(format(listings))
-print("\nSearch ")
-print(format(r_search(listings, "LongBeach", 2200)))
+        data_server.bind((HOST, PORT))
+        data_server.listen()
 
+        # sequentially recieve message
+        while True:
+            conn, addr = data_server.accept()
+            handle_app(conn, addr)
