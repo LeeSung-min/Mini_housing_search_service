@@ -9,7 +9,7 @@ with open("listings.json", "r") as file:
 def format(listings):
     formated_listing = ""
     for listing in listings:
-        formated_listing += (f"id=<{listing["id"]}>;city=<{listing["city"]}>;address=<{listing["address"]}>;price=<{listing["price"]}>;bedrooms=<{listing["bedrooms"]}>")
+        formated_listing += (f"id=<{listing['id']}>;city=<{listing['city']}>;address=<{listing['address']}>;price=<{listing['price']}>;bedrooms=<{listing['bedrooms']}>")
     
     formated_listing += "\n"
     return formated_listing
@@ -55,7 +55,7 @@ def handle_app(conn, addr):
                 except Exception as e:
                     conn.sendall(f"Error: {e}\n".encode("utf-8"))
             else:
-                conn.sendall("Error: Invalid Command")
+                conn.sendall("Error: Invalid Command\n".encode("utf-8"))
     print("Disconnected", addr)
 
 def main():
@@ -69,3 +69,6 @@ def main():
         while True:
             conn, addr = data_server.accept()
             handle_app(conn, addr)
+
+if __name__ == "__main__":
+    main()
