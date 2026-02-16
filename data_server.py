@@ -25,7 +25,7 @@ def r_search(listings, city, max_price):
 
 
 HOST = '127.0.0.1'
-PORT = 50001
+PORT = 49963
 
 def handle_app(conn, addr):
     print("Connected by", addr)
@@ -61,6 +61,9 @@ def handle_app(conn, addr):
 def main():
     # create a socket
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as data_server:
+
+        #added reuse address to fix port being used by previous server error
+        data_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         data_server.bind((HOST, PORT))
         data_server.listen()
